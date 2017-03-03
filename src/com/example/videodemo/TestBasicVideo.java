@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -45,7 +46,7 @@ public class TestBasicVideo extends Activity  implements  OnClickListener,Surfac
 	    String camera_mode_str_;
 	    String  Indoor_str_;
 	    String idcard;
-	    String device = "Phone";
+	    //String device = "Phone";
 	    private SurfaceHolder surfaceHolder; 
 	    AlertDialog aler = null;  
 	    @SuppressWarnings({ "deprecation", "unused" })
@@ -53,45 +54,21 @@ public class TestBasicVideo extends Activity  implements  OnClickListener,Surfac
 	    @SuppressWarnings({ "deprecation", "unused" })
 		private Camera.Parameters myParameters;
 	    private Camera.AutoFocusCallback mAutoFocusCallback=null;
-	    private boolean isView = false;
-	    private int frontCamera = 1;// 0是后置摄像头，1是前置摄像头
-	   
-	    
- 
 	  
 	    @SuppressWarnings("deprecation")
 		@Override
 	   protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		 mediarecorder.setOrientationHint(270);
-//		  myCamera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
-//          try {
-//              myCamera.lock();
-//              myCamera.setDisplayOrientation(90);
-//              myCamera.setPreviewDisplay(surfaceview.getHolder());
-//              myCamera.startPreview();
-//          } catch (IOException e) {
-//       	   myCamera.release();
-//       	   myCamera = null;
-//          }
-
-		 requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏 
-
-        
-		 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
-				 WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏 
-
-	      // 设置横屏显示
-	      setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
-
-	        // 选择支持半透明模式,在有surfaceview的activity中使用。 
-
-	        getWindow().setFormat(PixelFormat.TRANSLUCENT); 
-		setContentView(R.layout.main);
-		init(); 
-
-
+		 //初始化屏幕设置
+		  requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏 
+		  getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏 
+	      setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // 设置横屏显示
+	      // 选择支持半透明模式,在有surfaceview的activity中使用。 
+	      getWindow().setFormat(PixelFormat.TRANSLUCENT); 
+		  setContentView(R.layout.main);
+		  init(); 
 	}
+	    
 	 @SuppressWarnings("deprecation")
 	private void init() { 
 
@@ -112,9 +89,7 @@ public class TestBasicVideo extends Activity  implements  OnClickListener,Surfac
 
             SurfaceHolder holder = surfaceview.getHolder();// 取得holder 
 	        holder.addCallback(this); // holder加入回调接口 
-
 	        // setType必须设置，要不出错. 
-
 	        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS); 	
 	       if(null == myCamera) {
 	    	   // 打开前置摄像头
@@ -135,30 +110,9 @@ public class TestBasicVideo extends Activity  implements  OnClickListener,Surfac
 				        }
 				    }  
 				} 
-				
-//				Camera.Parameters parameters = myCamera.getParameters();  
-//				myCamera.setDisplayOrientation(90);  
-//				myCamera.setParameters(parameters);   
-	              
 	       }
-	       
 	   } 
-
-	    
-	
-	 //初始化屏幕设置
-	    public void initScreen(){
-	        requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
-	        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-	                WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
-	 
-	        // 设置横屏显示
-	        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-	 
-	        // 选择支持半透明模式,在有surfaceview的activity中使用。
-	        getWindow().setFormat(PixelFormat.TRANSLUCENT);
-	    }
-	    
+    
 	 @Override  
 	 public void onCheckedChanged(RadioGroup radioGroup1, int checkedId) {  
 	        switch (checkedId)  
@@ -207,30 +161,6 @@ public class TestBasicVideo extends Activity  implements  OnClickListener,Surfac
 	            	resolution_str_= "HR";
 	                Log.i("tag","HR");
 	                break;
-//	            case R.id.id:  
-//	            	 final EditText filename = new EditText(this);  
-//	                 Builder alerBuidler = new Builder(this);  
-//	                 alerBuidler  
-//	                         .setTitle("请输入工号")  
-//	                         .setView(filename)  
-//	                         .setPositiveButton("确定",  
-//	                                 new DialogInterface.OnClickListener() {  
-//	                                     @Override  
-//	                                     public void onClick(DialogInterface dialog,  
-//	                                             int which) {  
-//	                                    	  idcard = filename.getText().toString();   
-//	                                         
-//	                                     }  
-//	                                 });  
-//	                 if (aler != null) {
-//						aler = null;
-//					}
-//	                 aler = alerBuidler.create();  
-//	                 aler.setCanceledOnTouchOutside(false);  
-//	                 aler.show();  
-//	                 Log.i("tag","id");
-//	                 break;  
-	            
 	        }  
 	 }
 	
@@ -264,7 +194,7 @@ public class TestBasicVideo extends Activity  implements  OnClickListener,Surfac
 					}		
 	                mediarecorder.setCamera(myCamera);
 	                // 设置录制视频源为Camera(相机) 
-	               mediarecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA); 
+	                mediarecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA); 
 //	               mediarecorder.setOrientationHint(270);//视频旋转90度
 
 	                // 设置录制完成后视频的封装格式THREE_GPP为3gp.MPEG_4为mp4 
@@ -281,13 +211,11 @@ public class TestBasicVideo extends Activity  implements  OnClickListener,Surfac
 
 	                mediarecorder.setPreviewDisplay(surfaceHolder.getSurface()); 
 	                
-	                
-                   String name = "fake_"+resolution_str_+"_"+device+"_"+"Indoor_"+ pose_mode_str_+"_"+idcard+".mp4";
-//	               
+	               String name = "fake_"+resolution_str_+"_"+"Phone"+"_"+"Indoor_"+ pose_mode_str_+"_"+idcard+".mp4";             
                    File file = new File("/sdcard/video/");
                    file.mkdirs();// 创建文件夹
                    String fileName = "/sdcard/video/" + name;
-//	                // 设置视频文件输出的路径 
+	                // 设置视频文件输出的路径 
                 mediarecorder.setOutputFile(fileName); 
 	                try { 
 	                    mediarecorder.prepare(); // 准备录制  
@@ -299,7 +227,7 @@ public class TestBasicVideo extends Activity  implements  OnClickListener,Surfac
 	                    // TODO Auto-generated catch block 
 	                    e.printStackTrace(); 
 	                } 	            
-				break;
+				     break;
 
 				case R.id.stop:
 	                if (mediarecorder != null) { 
@@ -311,10 +239,11 @@ public class TestBasicVideo extends Activity  implements  OnClickListener,Surfac
 	                	myCamera.release();  
 	                	myCamera = null;
 	                } 
-	                break;
+	                 break;
 				
 				case R.id.card:  
 		            final EditText filename = new EditText(this);  
+		            filename.setInputType(EditorInfo.TYPE_CLASS_PHONE);//设置输入时是数字键盘
 		            Builder alerBuidler = new Builder(this);  
 		            alerBuidler  
 		                    .setTitle("请输入工号")  
@@ -324,58 +253,35 @@ public class TestBasicVideo extends Activity  implements  OnClickListener,Surfac
 		                                @Override  
 		                                public void onClick(DialogInterface dialog,  
 		                                        int which) {  
-		                                  idcard = filename.getText().toString();  
-		                                    
-		  
+		                                  idcard = filename.getText().toString();  	                                   		  
 		                                }  
 		                            });  
 		            aler = alerBuidler.create();  
 		            aler.setCanceledOnTouchOutside(false);  
 		            aler.show();  
-		            break;  
-				
-				}
-	            
-	           
+		            break;  				
+				}            	           
 	        }  
 	     
-	 @Override 
-
+	    @Override 
 	    public void surfaceChanged(SurfaceHolder holder, int format, int width, 
+          int height) { 
 
-	            int height) { 
-
-	        // 将holder，这个holder为开始在oncreat里面取得的holder，将它赋给surfaceHolder 
-
+	        // 将holder，这个holder为开始在oncreat里面取得的holder，将它赋给surfaceHolder
 	        surfaceHolder = holder; 
-
 	    } 
 
-	 
-
 	    @Override 
-
 	    public void surfaceCreated(SurfaceHolder holder) { 
-
 	        // 将holder，这个holder为开始在oncreat里面取得的holder，将它赋给surfaceHolder 
-
 	        surfaceHolder = holder; 
-
 	    } 
 
-	 
-
 	    @Override 
-
 	    public void surfaceDestroyed(SurfaceHolder holder) { 
-
 	        // surfaceDestroyed的时候同时对象设置为null 
-
 	        surfaceview = null; 
-
 	        surfaceHolder = null; 
-
 	        mediarecorder = null; 
-
 	    } 
 }
